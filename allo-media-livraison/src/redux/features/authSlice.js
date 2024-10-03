@@ -40,35 +40,28 @@ export const registers = createAsyncThunk(
   }
 );
 
-export const login = createAsyncThunk(
-  "auth/login",
-  async (data, thunkAPI) => {
-    console.log("Data being sent to API:", data);
+export const login = createAsyncThunk("auth/login", async (data, thunkAPI) => {
+  console.log("Data being sent to API:", data);
 
-    try {
-      const res = await axios.post(
-        "http://localhost:8001/api/auth/login",
-        data,
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
+  try {
+    const res = await axios.post("http://localhost:8001/api/auth/login", data, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
 
-      console.log("Response from API:", res.data);
+    console.log("Response from API:", res.data);
 
-      return res.data;
-    } catch (error) {
-      console.error(
-        "Error while registering:",
-        error.response?.data || error.message
-      );
+    return res.data;
+  } catch (error) {
+    console.error(
+      "Error while registering:",
+      error.response?.data || error.message
+    );
 
-      return thunkAPI.rejectWithValue(error);
-    }
+    return thunkAPI.rejectWithValue(error);
   }
-);
+});
 
 // Create the slice
 const authSlice = createSlice({

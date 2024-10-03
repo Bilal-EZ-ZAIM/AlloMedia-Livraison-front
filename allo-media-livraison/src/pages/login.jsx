@@ -2,7 +2,7 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import { login } from "../redux/features/authSlice";
-import { FaEnvelope, FaLock } from "react-icons/fa"; 
+import { FaEnvelope, FaLock } from "react-icons/fa";
 
 const Login = () => {
   const { error } = useSelector((state) => state.auth);
@@ -26,7 +26,6 @@ const Login = () => {
           Login
         </h1>
         <form onSubmit={handleSubmit(submit)} className="mt-8 space-y-6">
-          {/* حقل البريد الإلكتروني مع التسميات والأيقونات */}
           <div>
             <label className="block text-gray-700">Email Address</label>
             <div className="relative">
