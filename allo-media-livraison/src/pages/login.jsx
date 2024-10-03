@@ -1,7 +1,7 @@
 import React from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
-import { registers } from "../redux/features/authSlice";
+import { login } from "../redux/features/authSlice";
 const Login = () => {
   const { user } = useSelector((state) => state.auth);
 
