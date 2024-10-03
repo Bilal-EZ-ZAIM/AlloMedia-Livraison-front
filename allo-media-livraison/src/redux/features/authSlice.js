@@ -41,7 +41,7 @@ export const registers = createAsyncThunk(
 );
 
 export const login = createAsyncThunk(
-  "auth/register",
+  "auth/login",
   async (data, thunkAPI) => {
     console.log("Data being sent to API:", data);
 
@@ -104,7 +104,7 @@ const authSlice = createSlice({
         console.log("is fulfilled");
         state.isLoading = false;
         state.user = action.payload;
-        console.log("User registered successfully:", action.payload);
+        console.log("User logged in successfully:", action.payload);
         state.token = action.payload.token;
       })
       .addCase(login.rejected, (state, action) => {
