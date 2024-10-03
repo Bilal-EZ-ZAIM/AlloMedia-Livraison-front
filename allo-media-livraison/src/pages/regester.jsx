@@ -17,7 +17,7 @@ const Register = () => {
   } = useForm();
 
   const onSubmit = (data) => {
-    dispatch(registers(data));
+    dispatch(registers());
   };
 
   const password = watch("password");
