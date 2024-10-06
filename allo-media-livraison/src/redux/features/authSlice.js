@@ -300,7 +300,7 @@ const authSlice = createSlice({
         state.error = action.payload.response.data.message;
       });
 
-    // logout
+    // log out 
     builder
       .addCase(Deconxion.pending, (state) => {
         state.isLoading = true;
