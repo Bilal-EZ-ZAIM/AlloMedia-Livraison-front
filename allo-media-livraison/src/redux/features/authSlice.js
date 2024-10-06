@@ -7,6 +7,7 @@ const initialState = {
   user: null,
   error: null,
   token: null,
+  status: false,
 };
 
 // Create async thunk for registering a user
@@ -125,6 +126,32 @@ export const forgetPassword = createAsyncThunk(
   }
 );
 
+export const UpdatePassword = createAsyncThunk(
+  "auth/UpdatePassword",
+  async (data, thunkAPI) => {
+    const state = thunkAPI.getState().auth;
+
+    try {
+      const res = await axios.post(
+        `http://localhost:8001/api/auth/upditPassword`,
+        data,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${state.token}`,
+          },
+        }
+      );
+
+      return res.data;
+    } catch (error) {
+      console.error(error.response?.data || error.message);
+
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
+);
+
 // Create the slice
 const authSlice = createSlice({
   name: "auth",
@@ -136,6 +163,7 @@ const authSlice = createSlice({
       .addCase(registers.pending, (state) => {
         console.log("is pending");
         state.isLoading = true;
+        state.status = false;
       })
       .addCase(registers.fulfilled, (state, action) => {
         console.log("is fulfilled");
@@ -143,10 +171,12 @@ const authSlice = createSlice({
         state.user = action.payload;
         console.log("User registered successfully:", action.payload);
         state.token = action.payload.token;
+        state.error = null;
       })
       .addCase(registers.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload.response.data.errors;
+        state.status = false;
       });
 
     // login user
@@ -154,6 +184,7 @@ const authSlice = createSlice({
       .addCase(login.pending, (state) => {
         console.log("is pending");
         state.isLoading = true;
+        state.status = false;
       })
       .addCase(login.fulfilled, (state, action) => {
         console.log("is fulfilled");
@@ -161,12 +192,14 @@ const authSlice = createSlice({
         state.user = action.payload;
         console.log("User logged in successfully:", action.payload);
         state.token = action.payload.token;
+        state.error = null;
 
         console.log(state.token);
       })
       .addCase(login.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload.response.data.errors;
+        state.status = false;
       });
 
     // verifyOtp
@@ -175,6 +208,7 @@ const authSlice = createSlice({
         console.log("is pending");
         state.isLoading = true;
         console.log(state.token);
+        state.status = false;
       })
       .addCase(verifyOtp.fulfilled, (state, action) => {
         console.log("is fulfilled");
@@ -182,25 +216,32 @@ const authSlice = createSlice({
         state.user = action.payload;
         console.log("User logged in successfully:", action.payload);
         state.token = action.payload.token;
+        state.error = null;
         console.log(state.token);
       })
       .addCase(verifyOtp.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload.response.data.errors;
+        state.status = false;
       });
 
     // Forget Password
     builder
       .addCase(forgetPassword.pending, (state) => {
         state.isLoading = true;
+        state.status = false;
       })
       .addCase(forgetPassword.fulfilled, (state, action) => {
         state.isLoading = false;
         state.user = action.payload;
-        console.log("User Action", action.payload);
+        console.log("User Action", action);
+        state.token = action.payload.token;
+        state.error = null;
+        state.status = true;
       })
       .addCase(forgetPassword.rejected, (state, action) => {
         console.log("dghkjlm");
+        state.status = false;
 
         state.isLoading = false;
         console.log(action.payload.response.data.message);
