@@ -129,16 +129,17 @@ export const forgetPassword = createAsyncThunk(
 export const UpdatePassword = createAsyncThunk(
   "auth/UpdatePassword",
   async (data, thunkAPI) => {
+    console.log(data);
+    
     const state = thunkAPI.getState().auth;
 
     try {
       const res = await axios.post(
-        `http://localhost:8001/api/auth/upditPassword`,
+        `http://localhost:8001/api/auth/resetpassword/${state.token}`,
         data,
         {
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${state.token}`,
           },
         }
       );
@@ -240,6 +241,30 @@ const authSlice = createSlice({
         state.status = true;
       })
       .addCase(forgetPassword.rejected, (state, action) => {
+        console.log("dghkjlm");
+        state.status = false;
+
+        state.isLoading = false;
+        console.log(action.payload.response.data.message);
+
+        state.error = action.payload.response.data.message;
+      });
+
+    // UpdatePassword
+    builder
+      .addCase(UpdatePassword.pending, (state) => {
+        state.isLoading = true;
+        state.status = false;
+      })
+      .addCase(UpdatePassword.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.user = action.payload;
+        console.log("User Action pASSWORD", action);
+        state.token = action.payload.token;
+        state.error = null;
+        state.status = true;
+      })
+      .addCase(UpdatePassword.rejected, (state, action) => {
         console.log("dghkjlm");
         state.status = false;
 

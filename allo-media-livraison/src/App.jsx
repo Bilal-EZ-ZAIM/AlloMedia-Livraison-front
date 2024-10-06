@@ -8,7 +8,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Home from "./pages/Home";
 import VerfieOtp from "./pages/VerfieOtp";
 import ForgetPassword from "./pages/ForgetPassword";
-import UpdatePassword from "./pages/UpdatePassword";
+import UpdatPassword from "./pages/UpdatePassword";
 
 function App() {
   const [count, setCount] = useState(0);
@@ -23,7 +23,7 @@ function App() {
           <Route path="/signup" element={<Register />}></Route>
           <Route path="/verfei" element={<VerfieOtp />}></Route>
           <Route path="/forget-password" element={<ForgetPassword />}></Route>
-          <Route path="/updit-password" element={<UpdatePassword />}></Route>
+          <Route path="/updit-password" element={<UpdatPassword />}></Route>
         </Routes>
       </BrowserRouter>
     </>
