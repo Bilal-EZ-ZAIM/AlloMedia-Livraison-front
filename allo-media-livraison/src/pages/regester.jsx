@@ -17,20 +17,22 @@ const Register = () => {
   } = useForm();
 
   const onSubmit = (data) => {
-    dispatch(registers());
+    console.log(data);
+
+    dispatch(registers(data));
   };
 
   const password = watch("password");
 
   return (
-    <div className="max-h-full bg-gray-100 text-gray-900 flex justify-center items-center">
+    <div className="min-h-screen bg-gray-100 text-gray-900 flex justify-center items-center">
       <div className="max-w-screen-xl m-0 sm:m-10 bg-white shadow sm:rounded-lg flex justify-center flex-1">
-        <div className="w-full lg:w-1/2 xl:w-5/12 p-2 pb-4 flex flex-col justify-center items-center ">
-          <div className="flex flex-col items-center  w-full">
+        <div className="w-full lg:w-1/2 xl:w-5/12 p-6 flex flex-col justify-center items-center">
+          <div className="flex flex-col items-center w-full">
             <h1 className="text-2xl xl:text-3xl font-extrabold text-indigo-700">
               Create Your Account
             </h1>
-            <form onSubmit={handleSubmit(onSubmit)} className="w-full  mt-8">
+            <form onSubmit={handleSubmit(onSubmit)} className="w-full mt-8">
               <div className="mx-auto w-[95%] sm:w-[70%] space-y-4">
                 {/* Full Name */}
                 <label className="block text-gray-700">Full Name</label>
@@ -50,13 +52,17 @@ const Register = () => {
                       },
                     })}
                   />
-                  {error?.map((item, index) => (
-                    <p className="text-red-500 text-sm mt-1" key={index}>
-                      {" "}
-                      {item.path === "name" ? item.msg : null}{" "}
-                    </p>
-                  ))}
+                  {/* أخطاء Backend */}
+                  {error?.length > 0 &&
+                    error.map((item, index) =>
+                      item.path === "name" ? (
+                        <p className="text-red-500 text-sm mt-1" key={index}>
+                          {item.msg}
+                        </p>
+                      ) : null
+                    )}
                 </div>
+                {/* أخطاء Frontend */}
                 {errors.name && (
                   <p className="text-red-500 text-sm mt-1">
                     {errors.name.message}
@@ -81,19 +87,22 @@ const Register = () => {
                       },
                     })}
                   />
-                  {errors.email && (
-                    <p className="text-red-500 text-sm mt-1">
-                      {errors.email.message}
-                    </p>
-                  )}
-
-                  {error?.map((item, index) => (
-                    <p className="text-red-500 text-sm " key={index}>
-                      {" "}
-                      {item.path === "email" ? item.msg : null}{" "}
-                    </p>
-                  ))}
+                  {/* أخطاء Backend */}
+                  {error?.length > 0 &&
+                    error.map((item, index) =>
+                      item.path === "email" ? (
+                        <p className="text-red-500 text-sm mt-1" key={index}>
+                          {item.msg}
+                        </p>
+                      ) : null
+                    )}
                 </div>
+                {/* أخطاء Frontend */}
+                {errors.email && (
+                  <p className="text-red-500 text-sm mt-1">
+                    {errors.email.message}
+                  </p>
+                )}
 
                 {/* Phone */}
                 <label className="block text-gray-700">Phone Number</label>
@@ -113,18 +122,22 @@ const Register = () => {
                       },
                     })}
                   />
-                  {errors.phone && (
-                    <p className="text-red-500 text-sm mt-1">
-                      {errors.phone.message}
-                    </p>
-                  )}
-                  {error?.map((item, index) => (
-                    <p className="text-red-500 text-sm " key={index}>
-                      {" "}
-                      {item.path === "phone" ? item.msg : null}{" "}
-                    </p>
-                  ))}
+                  {/* أخطاء Backend */}
+                  {error?.length > 0 &&
+                    error.map((item, index) =>
+                      item.path === "phone" ? (
+                        <p className="text-red-500 text-sm mt-1" key={index}>
+                          {item.msg}
+                        </p>
+                      ) : null
+                    )}
                 </div>
+                {/* أخطاء Frontend */}
+                {errors.phone && (
+                  <p className="text-red-500 text-sm mt-1">
+                    {errors.phone.message}
+                  </p>
+                )}
 
                 {/* Password */}
                 <label className="block text-gray-700">Password</label>
@@ -144,19 +157,22 @@ const Register = () => {
                       },
                     })}
                   />
-                  {errors.password && (
-                    <p className="text-red-500 text-sm mt-1">
-                      {errors.password.message}
-                    </p>
-                  )}
-
-                  {error?.map((item, index) => (
-                    <p className="text-red-500 text-sm " key={index}>
-                      {" "}
-                      {item.path === "password" ? item.msg : null}{" "}
-                    </p>
-                  ))}
+                  {/* أخطاء Backend */}
+                  {error?.length > 0 &&
+                    error.map((item, index) =>
+                      item.path === "password" ? (
+                        <p className="text-red-500 text-sm mt-1" key={index}>
+                          {item.msg}
+                        </p>
+                      ) : null
+                    )}
                 </div>
+                {/* أخطاء Frontend */}
+                {errors.password && (
+                  <p className="text-red-500 text-sm mt-1">
+                    {errors.password.message}
+                  </p>
+                )}
 
                 {/* Confirm Password */}
                 <label className="block text-gray-700">Confirm Password</label>
@@ -176,20 +192,22 @@ const Register = () => {
                         value === password || "Passwords do not match",
                     })}
                   />
-
-                  {error?.map((item, index) => (
-                    <p className="text-red-500 " key={index}>
-                      {" "}
-                      {item.path === "confirmPassword" ? item.msg : null}{" "}
-                    </p>
-                  ))}
-
-                  {errors.confirmPassword && (
-                    <p className="text-red-500 text-sm mt-1">
-                      {errors.confirmPassword.message}
-                    </p>
-                  )}
+                  {/* أخطاء Backend */}
+                  {error?.length > 0 &&
+                    error.map((item, index) =>
+                      item.path === "confirmPassword" ? (
+                        <p className="text-red-500 text-sm mt-1" key={index}>
+                          {item.msg}
+                        </p>
+                      ) : null
+                    )}
                 </div>
+                {/* أخطاء Frontend */}
+                {errors.confirmPassword && (
+                  <p className="text-red-500 text-sm mt-1">
+                    {errors.confirmPassword.message}
+                  </p>
+                )}
 
                 {/* Submit Button */}
                 <button
