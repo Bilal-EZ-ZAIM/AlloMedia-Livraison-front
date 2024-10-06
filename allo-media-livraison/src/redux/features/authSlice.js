@@ -97,6 +97,34 @@ export const verifyOtp = createAsyncThunk(
   }
 );
 
+export const forgetPassword = createAsyncThunk(
+  "auth/forgetPassword",
+  async (data, thunkAPI) => {
+    try {
+      const res = await axios.post(
+        `http://localhost:8001/api/auth//forgetpassword`,
+        data,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      console.log("Response from API:", res);
+
+      return res.data;
+    } catch (error) {
+      console.error(
+        "Error while verifying OTP:",
+        error.response?.data || error.message
+      );
+
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
+);
+
 // Create the slice
 const authSlice = createSlice({
   name: "auth",
@@ -115,7 +143,6 @@ const authSlice = createSlice({
         state.user = action.payload;
         console.log("User registered successfully:", action.payload);
         state.token = action.payload.token;
-        
       })
       .addCase(registers.rejected, (state, action) => {
         state.isLoading = false;
@@ -134,7 +161,7 @@ const authSlice = createSlice({
         state.user = action.payload;
         console.log("User logged in successfully:", action.payload);
         state.token = action.payload.token;
-        
+
         console.log(state.token);
       })
       .addCase(login.rejected, (state, action) => {
@@ -160,6 +187,25 @@ const authSlice = createSlice({
       .addCase(verifyOtp.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload.response.data.errors;
+      });
+
+    // Forget Password
+    builder
+      .addCase(forgetPassword.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(forgetPassword.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.user = action.payload;
+        console.log("User Action", action.payload);
+      })
+      .addCase(forgetPassword.rejected, (state, action) => {
+        console.log("dghkjlm");
+
+        state.isLoading = false;
+        console.log(action.payload.response.data.message);
+
+        state.error = action.payload.response.data.message;
       });
   },
 });
