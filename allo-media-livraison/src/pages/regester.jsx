@@ -52,7 +52,6 @@ const Register = () => {
                       },
                     })}
                   />
-                  {/* أخطاء Backend */}
                   {error?.length > 0 &&
                     error.map((item, index) =>
                       item.path === "name" ? (
@@ -62,14 +61,12 @@ const Register = () => {
                       ) : null
                     )}
                 </div>
-                {/* أخطاء Frontend */}
                 {errors.name && (
                   <p className="text-red-500 text-sm mt-1">
                     {errors.name.message}
                   </p>
                 )}
 
-                {/* Email */}
                 <label className="block text-gray-700">Email Address</label>
                 <div className="relative">
                   <FaEnvelope className="absolute left-3 top-3 text-gray-500" />
@@ -87,7 +84,6 @@ const Register = () => {
                       },
                     })}
                   />
-                  {/* أخطاء Backend */}
                   {error?.length > 0 &&
                     error.map((item, index) =>
                       item.path === "email" ? (
@@ -97,14 +93,12 @@ const Register = () => {
                       ) : null
                     )}
                 </div>
-                {/* أخطاء Frontend */}
                 {errors.email && (
                   <p className="text-red-500 text-sm mt-1">
                     {errors.email.message}
                   </p>
                 )}
 
-                {/* Phone */}
                 <label className="block text-gray-700">Phone Number</label>
                 <div className="relative">
                   <FaPhone className="absolute left-3 top-3 text-gray-500" />
@@ -122,7 +116,6 @@ const Register = () => {
                       },
                     })}
                   />
-                  {/* أخطاء Backend */}
                   {error?.length > 0 &&
                     error.map((item, index) =>
                       item.path === "phone" ? (
@@ -132,14 +125,12 @@ const Register = () => {
                       ) : null
                     )}
                 </div>
-                {/* أخطاء Frontend */}
                 {errors.phone && (
                   <p className="text-red-500 text-sm mt-1">
                     {errors.phone.message}
                   </p>
                 )}
 
-                {/* Password */}
                 <label className="block text-gray-700">Password</label>
                 <div className="relative">
                   <FaLock className="absolute left-3 top-3 text-gray-500" />
@@ -157,7 +148,6 @@ const Register = () => {
                       },
                     })}
                   />
-                  {/* أخطاء Backend */}
                   {error?.length > 0 &&
                     error.map((item, index) =>
                       item.path === "password" ? (
@@ -167,14 +157,12 @@ const Register = () => {
                       ) : null
                     )}
                 </div>
-                {/* أخطاء Frontend */}
                 {errors.password && (
                   <p className="text-red-500 text-sm mt-1">
                     {errors.password.message}
                   </p>
                 )}
 
-                {/* Confirm Password */}
                 <label className="block text-gray-700">Confirm Password</label>
                 <div className="relative">
                   <FaLock className="absolute left-3 top-3 text-gray-500" />
@@ -192,7 +180,6 @@ const Register = () => {
                         value === password || "Passwords do not match",
                     })}
                   />
-                  {/* أخطاء Backend */}
                   {error?.length > 0 &&
                     error.map((item, index) =>
                       item.path === "confirmPassword" ? (
@@ -202,7 +189,6 @@ const Register = () => {
                       ) : null
                     )}
                 </div>
-                {/* أخطاء Frontend */}
                 {errors.confirmPassword && (
                   <p className="text-red-500 text-sm mt-1">
                     {errors.confirmPassword.message}

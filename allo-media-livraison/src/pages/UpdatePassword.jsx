@@ -2,19 +2,25 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import { FaLock, FaEnvelope } from "react-icons/fa";
+import { UpdatePassword } from "../redux/features/authSlice";
 
-const UpdatePassword = () => {
+const UpdatPassword = () => {
   const dispatch = useDispatch();
   const { error } = useSelector((state) => state.auth);
 
   const {
     register,
     handleSubmit,
+    watch,
     formState: { errors },
   } = useForm();
 
+  const password = watch("newPassword");
+
   const submit = (data) => {
-    dispatch(updatePassword(data));
+    console.log(data);
+
+    dispatch(UpdatePassword(data));
   };
 
   return (
@@ -36,7 +42,7 @@ const UpdatePassword = () => {
                 } focus:outline-none focus:border-indigo-500 focus:bg-white`}
                 type="text"
                 placeholder="Enter the verification code"
-                {...register("verificationCode", {
+                {...register("code", {
                   required: "Verification code is required",
                 })}
               />
@@ -90,9 +96,8 @@ const UpdatePassword = () => {
                 placeholder="Confirm Password"
                 {...register("confirmPassword", {
                   required: "Please confirm your password",
-                  validate: (value, getValues) =>
-                    value === getValues("newPassword") ||
-                    "Passwords do not match",
+                  validate: (value) =>
+                    value === password || "Passwords do not match",
                 })}
               />
             </div>
@@ -115,4 +120,4 @@ const UpdatePassword = () => {
   );
 };
 
-export default UpdatePassword;
+export default UpdatPassword;
