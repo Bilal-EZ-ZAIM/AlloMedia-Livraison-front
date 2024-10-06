@@ -2,14 +2,16 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { forgetPassword } from "../redux/features/authSlice";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 const ForgetPassword = () => {
   const [message, setMessage] = useState("");
-  const { error, isLoading } = useSelector((state) => state.auth);
+  const { error, isLoading, status } = useSelector((state) => state.auth);
 
   console.log(error);
 
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const {
     register,
@@ -20,17 +22,18 @@ const ForgetPassword = () => {
   const onSubmit = (data) => {
     console.log(data);
     dispatch(forgetPassword(data));
-    setMessage("Password reset link has been sent to your email.");
   };
+
+  {
+    status ? navigate("/updit-password") : null;
+  }
 
   return (
     <div className="min-h-screen bg-gray-100 flex items-center justify-center">
       <div className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 max-w-md w-full">
         <h1 className="text-center text-2xl font-bold mb-6">Forgot Password</h1>
 
-        {error && (
-          <div className="mb-4 text-red-500 text-center">{error}</div>
-        )}
+        {error && <div className="mb-4 text-red-500 text-center">{error}</div>}
 
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="mb-4">

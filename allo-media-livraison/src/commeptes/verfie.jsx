@@ -5,35 +5,34 @@ import { verifyOtp } from "../redux/features/authSlice";
 const Verifie = () => {
   const { register, handleSubmit } = useForm();
   const { user } = useSelector((state) => state.auth);
-  
 
   const dispatch = useDispatch();
 
   const onSubmit = (data) => {
-    dispatch(verifyOtp(data ));
+    dispatch(verifyOtp(data));
   };
   return (
-    <div className="mx-auto border max-w-sm mt-20 rounded">
-      <form className="shadow-md px-4 py-6" onSubmit={handleSubmit(onSubmit)}>
-        <div className="flex justify-center gap-2 mb-6">
-          <input
-            {...register("code", { required: true })}
-            className="w-12 h-12 text-center border rounded-md shadow-sm focus:border-teal-500 focus:ring-teal-500"
-            type="text"
-            maxLength="4"
-            required
-          />
+    <>
+      <div class="flex flex-1 flex-col  justify-center space-y-5 max-w-md mx-auto mt-24">
+        <div class="flex flex-col space-y-2 text-center">
+          <h2 class="text-3xl md:text-4xl font-bold">Confirm OTP</h2>
+          <p class="text-md md:text-xl">Enter the OTP we just sent you.</p>
         </div>
-        <div className="flex items-center justify-center">
-          <button
-            className="bg-teal-500 hover:bg-teal-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-            type="submit"
-          >
-            Verify
-          </button>
-        </div>
-      </form>
-    </div>
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <div class="flex flex-col max-w-md space-y-5">
+            <input
+              {...register("code", { required: true })}
+              type="text"
+              placeholder="otp"
+              class="flex px-3 py-2 md:px-4 md:py-3 border-2 border-black rounded-lg font-medium placeholder:font-normal"
+            />
+            <button class="flex items-center justify-center flex-none px-3 py-2 md:px-4 md:py-3 border-2 rounded-lg font-medium border-black bg-black text-white">
+              Confirm
+            </button>
+          </div>
+        </form>
+      </div>
+    </>
   );
 };
 
