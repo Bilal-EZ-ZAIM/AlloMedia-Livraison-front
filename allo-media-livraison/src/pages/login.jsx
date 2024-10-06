@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import { login } from "../redux/features/authSlice";
 import { FaEnvelope, FaLock } from "react-icons/fa";
+import { Link } from "react-router-dom";
 
 const Login = () => {
   const { error } = useSelector((state) => state.auth);
@@ -52,7 +53,6 @@ const Login = () => {
             )}
           </div>
 
-          {/* حقل كلمة المرور مع التسميات والأيقونات */}
           <div>
             <label className="block text-gray-700">Password</label>
             <div className="relative">
@@ -79,7 +79,6 @@ const Login = () => {
             )}
           </div>
 
-          {/* زر تسجيل الدخول */}
           <button
             type="submit"
             className="w-full py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-800 transition duration-300"
@@ -87,12 +86,17 @@ const Login = () => {
             Sign In
           </button>
         </form>
-
-        {/* تسجيل الدخول باستخدام Google */}
+        <div class="flex items-center justify-between">
+          <Link
+            to="/forget-password"
+            className="text-blue-500 mt-4 hover:text-blue-900 focus:outline-none focus:underline transition duration-150 ease-in-out"
+          >
+            Forgot Password?
+          </Link>
+        </div>
         <div className="mt-6 text-center">
           <p className="text-sm text-gray-600">Or sign in with</p>
           <button className="mt-2 flex items-center justify-center w-full py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition duration-300">
-            {/* أيقونة Google */}
             <svg
               className="w-5 h-5 mr-2"
               viewBox="0 0 533.5 544.3"
