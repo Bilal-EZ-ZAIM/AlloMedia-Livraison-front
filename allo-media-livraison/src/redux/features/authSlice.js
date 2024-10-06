@@ -130,7 +130,7 @@ export const UpdatePassword = createAsyncThunk(
   "auth/UpdatePassword",
   async (data, thunkAPI) => {
     console.log(data);
-    
+
     const state = thunkAPI.getState().auth;
 
     try {
@@ -140,6 +140,32 @@ export const UpdatePassword = createAsyncThunk(
         {
           headers: {
             "Content-Type": "application/json",
+          },
+        }
+      );
+
+      return res.data;
+    } catch (error) {
+      console.error(error.response?.data || error.message);
+
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
+);
+
+export const Deconxion = createAsyncThunk(
+  "auth/Deconxion",
+  async (_, thunkAPI) => {
+
+    const token = localStorage.getItem("token");
+
+    try {
+      const res = await axios.get(
+        `http://localhost:8001/api/auth/logout`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
           },
         }
       );
@@ -194,7 +220,7 @@ const authSlice = createSlice({
         console.log("User logged in successfully:", action.payload);
         state.token = action.payload.token;
         state.error = null;
-
+        localStorage.setItem("token", action.payload.token);
         console.log(state.token);
       })
       .addCase(login.rejected, (state, action) => {
@@ -265,6 +291,31 @@ const authSlice = createSlice({
         state.status = true;
       })
       .addCase(UpdatePassword.rejected, (state, action) => {
+        console.log("dghkjlm");
+        state.status = false;
+
+        state.isLoading = false;
+        console.log(action.payload.response.data.message);
+
+        state.error = action.payload.response.data.message;
+      });
+
+    // logout
+    builder
+      .addCase(Deconxion.pending, (state) => {
+        state.isLoading = true;
+        state.status = false;
+      })
+      .addCase(Deconxion.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.user = action.payload;
+        console.log("User Action pASSWORD", action);
+        state.token = action.payload.token;
+        state.error = null;
+        state.status = true;
+        localStorage.removeItem("token");
+      })
+      .addCase(Deconxion.rejected, (state, action) => {
         console.log("dghkjlm");
         state.status = false;
 
