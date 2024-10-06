@@ -30,6 +30,14 @@ const Header = () => {
                 Home
               </NavLink>
               <NavLink
+                to="/verfei"
+                className="mr-5 font-medium leading-6 text-gray-600 hover:text-gray-900"
+                activeClassName="text-gray-900"
+                exact
+              >
+                verfei
+              </NavLink>
+              <NavLink
                 to="/features"
                 className="mr-5 font-medium leading-6 text-gray-600 hover:text-gray-900"
                 activeClassName="text-gray-900"
