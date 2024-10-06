@@ -1,7 +1,18 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
+import { Deconxion } from "../redux/features/authSlice";
+import { useDispatch, useSelector } from "react-redux";
 
 const Header = () => {
+  const { error } = useSelector((state) => state.auth);
+
+  const dispatch = useDispatch();
+
+  const deconxion = () => {
+    console.log("login");
+
+    dispatch(Deconxion());
+  };
   return (
     <>
       <section className="w-full px-8 text-gray-700 bg-white">
@@ -75,6 +86,14 @@ const Header = () => {
               aria-label="Sign up"
             >
               Sign up
+            </NavLink>
+            <NavLink
+              onClick={deconxion}
+              to="/signup"
+              className="inline-flex items-center justify-center px-4 py-2 text-base font-medium leading-6 text-white whitespace-no-wrap bg-red-500 border border-transparent rounded-md shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2"
+              aria-label="Sign up"
+            >
+              Log out
             </NavLink>
           </div>
         </div>
