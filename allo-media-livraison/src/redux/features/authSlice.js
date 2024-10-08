@@ -8,6 +8,7 @@ const initialState = {
   error: null,
   token: null,
   status: false,
+  isLogin: false,
 };
 
 // Create async thunk for registering a user
@@ -75,7 +76,7 @@ export const verifyOtp = createAsyncThunk(
 
     try {
       const res = await axios.post(
-        `http://localhost:8001/api/auth/verify-otp/${state.token}`,
+        `http://localhost:8001/api/auth/verifyAcount/${state.token}`,
         data,
         {
           headers: {
@@ -156,25 +157,77 @@ export const UpdatePassword = createAsyncThunk(
 export const Deconxion = createAsyncThunk(
   "auth/Deconxion",
   async (_, thunkAPI) => {
-
     const token = localStorage.getItem("token");
 
     try {
-      const res = await axios.get(
-        `http://localhost:8001/api/auth/logout`,
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const res = await axios.get(`http://localhost:8001/api/auth/logout`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
       return res.data;
     } catch (error) {
       console.error(error.response?.data || error.message);
 
       return thunkAPI.rejectWithValue(error);
+    }
+  }
+);
+
+export const verifier2FA = createAsyncThunk(
+  "auth/verifier2FA",
+  async (data, thunkAPI) => {
+    const state = thunkAPI.getState().auth;
+    try {
+      const res = await axios.post(
+        `http://localhost:8001/api/auth/verify-otp/${state.token}`,
+        data,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      console.log("Response from API:", res.data);
+
+      return res.data;
+    } catch (error) {
+      console.error(
+        "Error while verifying OTP:",
+        error.response?.data || error.message
+      );
+
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
+);
+
+export const isLogins = createAsyncThunk(
+  "auth/isLogins",
+  async (token, thunkAPI) => {
+   
+
+    try {
+      const res = await axios.get(`http://localhost:8001/api/auth/islogin/`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      console.log("Response from API:", res.data);
+
+      return res.data;
+    } catch (error) {
+      console.error(
+        "Error while verifying login:",
+        error.response?.data || error.message
+      );
+
+      return thunkAPI.rejectWithValue(error.response?.data || error.message); // Pass specific error message
     }
   }
 );
@@ -220,12 +273,14 @@ const authSlice = createSlice({
         console.log("User logged in successfully:", action.payload);
         state.token = action.payload.token;
         state.error = null;
-        localStorage.setItem("token", action.payload.token);
+        state.status = true;
+
         console.log(state.token);
       })
       .addCase(login.rejected, (state, action) => {
+        console.log(action.payload.response.data.message);
         state.isLoading = false;
-        state.error = action.payload.response.data.errors;
+        state.error = action.payload.response.data.message;
         state.status = false;
       });
 
@@ -300,7 +355,7 @@ const authSlice = createSlice({
         state.error = action.payload.response.data.message;
       });
 
-    // log out 
+    // log out
     builder
       .addCase(Deconxion.pending, (state) => {
         state.isLoading = true;
@@ -313,6 +368,7 @@ const authSlice = createSlice({
         state.token = action.payload.token;
         state.error = null;
         state.status = true;
+        state.isLogin = false;
         localStorage.removeItem("token");
       })
       .addCase(Deconxion.rejected, (state, action) => {
@@ -321,6 +377,49 @@ const authSlice = createSlice({
 
         state.isLoading = false;
         console.log(action.payload.response.data.message);
+
+        state.error = action.payload.response.data.message;
+      });
+
+    builder
+      .addCase(verifier2FA.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(verifier2FA.fulfilled, (state, action) => {
+        console.log("dghkjlm");
+        console.log(action.payload);
+
+        state.isLoading = false;
+        state.user = action.payload;
+        state.token = action.payload.token;
+        state.error = null;
+        state.status = null;
+        localStorage.setItem("token", action.payload.token);
+        state.isLogin = true;
+      })
+      .addCase(verifier2FA.rejected, (state, action) => {
+        state.error = null;
+        state.isLoading = false;
+        console.log(action.payload.response);
+
+        state.error = action.payload.response.data.message;
+      });
+
+    builder
+      .addCase(isLogins.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(isLogins.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.user = action.payload;
+        state.error = null;
+        state.status = null;
+        state.isLogin = true;
+      })
+      .addCase(isLogins.rejected, (state, action) => {
+        state.error = null;
+        state.isLoading = false;
+        console.log(action.payload.response);
 
         state.error = action.payload.response.data.message;
       });
