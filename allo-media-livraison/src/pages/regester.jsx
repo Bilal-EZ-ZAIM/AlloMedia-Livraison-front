@@ -3,11 +3,13 @@ import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import { FaUser, FaEnvelope, FaPhone, FaLock } from "react-icons/fa";
 import { registers } from "../redux/features/authSlice";
+import { useNavigate } from "react-router-dom";
 
 const Register = () => {
   const { error } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   console.log(error);
+  const Navigate = useNavigate();
 
   const {
     register,
@@ -16,10 +18,18 @@ const Register = () => {
     formState: { errors },
   } = useForm();
 
-  const onSubmit = (data) => {
-    console.log(data);
+  const onSubmit = async (data) => {
+    try {
+      const res = await dispatch(registers(data));
 
-    dispatch(registers(data));
+      console.log("Dispatch Response:", res.payload.status);
+
+      if (res.payload.status === "success") {
+        Navigate("/verfei");
+      }
+    } catch (error) {
+      console.log("Error during verification:", error);
+    }
   };
 
   const password = watch("password");
@@ -34,11 +44,11 @@ const Register = () => {
             </h1>
             <form onSubmit={handleSubmit(onSubmit)} className="w-full mt-8">
               <div className="mx-auto w-[95%] sm:w-[70%] space-y-4">
-                {/* Full Name */}
                 <label className="block text-gray-700">Full Name</label>
                 <div className="relative">
                   <FaUser className="absolute left-3 top-3 text-gray-500" />
                   <input
+                    data-testid="full-name-input"
                     className={`w-full pl-10 pr-4 py-2 rounded-lg bg-gray-100 border ${
                       errors.name ? "border-red-500" : "border-gray-300"
                     } focus:outline-none focus:border-indigo-500 focus:bg-white`}
@@ -71,6 +81,7 @@ const Register = () => {
                 <div className="relative">
                   <FaEnvelope className="absolute left-3 top-3 text-gray-500" />
                   <input
+                    data-testid="full-email-input"
                     className={`w-full pl-10 pr-4 py-2 rounded-lg bg-gray-100 border ${
                       errors.email ? "border-red-500" : "border-gray-300"
                     } focus:outline-none focus:border-indigo-500 focus:bg-white`}
@@ -94,7 +105,7 @@ const Register = () => {
                     )}
                 </div>
                 {errors.email && (
-                  <p className="text-red-500 text-sm mt-1">
+                  <p role="alert" className="text-red-500 text-sm mt-1">
                     {errors.email.message}
                   </p>
                 )}
@@ -131,14 +142,18 @@ const Register = () => {
                   </p>
                 )}
 
-                <label className="block text-gray-700">Password</label>
+                <label htmlFor="Password" className="block  text-gray-700">
+                  Password
+                </label>
                 <div className="relative">
                   <FaLock className="absolute left-3 top-3 text-gray-500" />
                   <input
                     className={`w-full pl-10 pr-4 py-2 rounded-lg bg-gray-100 border ${
                       errors.password ? "border-red-500" : "border-gray-300"
                     } focus:outline-none focus:border-indigo-500 focus:bg-white`}
-                    type="password"
+                    type="Password"
+                    id="password"
+                    data-testid="password-input"
                     placeholder="Create a Password"
                     {...register("password", {
                       required: "Password is required",
@@ -167,6 +182,7 @@ const Register = () => {
                 <div className="relative">
                   <FaLock className="absolute left-3 top-3 text-gray-500" />
                   <input
+                    data-testid="confirm-password-input"
                     className={`w-full pl-10 pr-4 py-2 rounded-lg bg-gray-100 border ${
                       errors.confirmPassword
                         ? "border-red-500"
