@@ -1,17 +1,20 @@
 import React from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { Deconxion } from "../redux/features/authSlice";
 import { useDispatch, useSelector } from "react-redux";
 
 const Header = () => {
-  const { error } = useSelector((state) => state.auth);
+  const { error, isLogin } = useSelector((state) => state.auth);
+  console.log(isLogin);
 
   const dispatch = useDispatch();
+  const navigate = useNavigate;
 
   const deconxion = () => {
     console.log("login");
 
     dispatch(Deconxion());
+    navigate("/");
   };
   return (
     <>
@@ -73,28 +76,37 @@ const Header = () => {
           </div>
 
           <div className="inline-flex items-center ml-5 space-x-6 lg:justify-end">
-            <NavLink
-              to="/signin"
-              className="text-base font-medium leading-6 text-gray-600 whitespace-no-wrap transition duration-150 ease-in-out hover:text-gray-900"
-              aria-label="Sign in"
-            >
-              Sign in
-            </NavLink>
-            <NavLink
-              to="/signup"
-              className="inline-flex items-center justify-center px-4 py-2 text-base font-medium leading-6 text-white whitespace-no-wrap bg-indigo-600 border border-transparent rounded-md shadow-sm hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-600"
-              aria-label="Sign up"
-            >
-              Sign up
-            </NavLink>
-            <NavLink
-              onClick={deconxion}
-              to="/signup"
-              className="inline-flex items-center justify-center px-4 py-2 text-base font-medium leading-6 text-white whitespace-no-wrap bg-red-500 border border-transparent rounded-md shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2"
-              aria-label="Sign up"
-            >
-              Log out
-            </NavLink>
+            {!isLogin ? (
+              <>
+                <NavLink
+                  to="/signin"
+                  className="text-base font-medium leading-6 text-gray-600 whitespace-no-wrap transition duration-150 ease-in-out hover:text-gray-900"
+                  aria-label="Sign in"
+                >
+                  Sign in
+                </NavLink>
+                <NavLink
+                  to="/signup"
+                  className="inline-flex items-center justify-center px-4 py-2 text-base font-medium leading-6 text-white whitespace-no-wrap bg-indigo-600 border border-transparent rounded-md shadow-sm hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-600"
+                  aria-label="Sign up"
+                >
+                  Sign up
+                </NavLink>
+              </>
+            ) : (
+              <>
+                <NavLink to="/profile" className="inline-flex items-center justify-center px-4 py-2 text-base font-medium leading-6 text-white whitespace-no-wrap bg-indigo-600 border border-transparent rounded-md shadow-sm hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-600">
+                  Profile
+                </NavLink>
+                <NavLink
+                  onClick={deconxion}
+                  className="inline-flex items-center justify-center px-4 py-2 text-base font-medium leading-6 text-white whitespace-no-wrap bg-red-500 border border-transparent rounded-md shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2"
+                  aria-label="Sign up"
+                >
+                  Log out
+                </NavLink>
+              </>
+            )}
           </div>
         </div>
       </section>
