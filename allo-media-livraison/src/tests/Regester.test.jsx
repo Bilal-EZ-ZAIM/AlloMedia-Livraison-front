@@ -7,7 +7,7 @@ import Register from "../pages/regester";
 
 const mockStore = configureMockStore();
 
-describe("Register Component", () => {
+describe("Register Page", () => {
   let store;
 
   beforeEach(() => {

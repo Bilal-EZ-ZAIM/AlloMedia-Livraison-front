@@ -51,6 +51,7 @@ const Login = () => {
               <div className="relative">
                 <FaEnvelope className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
                 <input
+                  data-testid="full-email-input"
                   className={`w-full pl-10 pr-4 py-2 rounded-lg bg-gray-100 border ${
                     errors.email ? "border-red-500" : "border-gray-300"
                   } focus:outline-none focus:border-indigo-500 focus:bg-white`}
@@ -81,6 +82,7 @@ const Login = () => {
                     errors.password ? "border-red-500" : "border-gray-300"
                   } focus:outline-none focus:border-indigo-500 focus:bg-white`}
                   type="password"
+                  data-testid="password-input"
                   placeholder="Password"
                   {...register("password", {
                     required: "Password is required",
@@ -138,7 +140,7 @@ const Login = () => {
                   fill="#ea4335"
                 />
               </svg>
-              Sign In with Google
+              login with Google
             </button>
           </div>
         </div>
